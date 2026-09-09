@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "CapyDB Node library",
+  "_version": "2.0.0",
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"],
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "libReplacement": false,
+    "noErrorTruncation": true,
+    "declaration": true,
+    "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules", "dist", "coverage"]
+}
