@@ -5,7 +5,7 @@
  * that does two things and nothing else:
  *
  * 1. Reads CapyDB's own environment variables. CapyDB's deployment
- *    integrations push `CAPYDB_KV_REST_URL` and `CAPYDB_KV_REST_TOKEN`, not
+ *    integrations push `CAPYKV_REST_URL` and `CAPYKV_REST_TOKEN`, not
  *    the `UPSTASH_*` names that `Redis.fromEnv()` looks for, so
  *    `fromEnv()` cannot find them. This package is the equivalent.
  * 2. Fails fast when configuration is missing. Constructing `new Redis({})`
@@ -21,8 +21,8 @@
  * ```ts
  * import { Redis } from "@upstash/redis"
  * const redis = new Redis({
- *   url: process.env.CAPYDB_KV_REST_URL!,
- *   token: process.env.CAPYDB_KV_REST_TOKEN!,
+ *   url: process.env.CAPYKV_REST_URL!,
+ *   token: process.env.CAPYKV_REST_TOKEN!,
  * })
  * ```
  *
@@ -44,10 +44,10 @@
 import { Redis, type RedisConfigNodejs } from "@upstash/redis";
 
 /** Env vars checked (in order) for the REST endpoint. */
-const URL_ENV_VARS = ["CAPYDB_KV_REST_URL", "UPSTASH_REDIS_REST_URL"] as const;
+const URL_ENV_VARS = ["CAPYKV_REST_URL", "UPSTASH_REDIS_REST_URL"] as const;
 
 /** Env vars checked (in order) for the access token. */
-const TOKEN_ENV_VARS = ["CAPYDB_KV_REST_TOKEN", "UPSTASH_REDIS_REST_TOKEN"] as const;
+const TOKEN_ENV_VARS = ["CAPYKV_REST_TOKEN", "UPSTASH_REDIS_REST_TOKEN"] as const;
 
 /**
  * Thrown when the K/V endpoint or token cannot be resolved, or resolves to
@@ -72,7 +72,7 @@ export interface CapyKVCredentials {
 
 export interface CreateKVOptions {
   /**
-   * Overrides the resolved endpoint. Falls back to `CAPYDB_KV_REST_URL`, then
+   * Overrides the resolved endpoint. Falls back to `CAPYKV_REST_URL`, then
    * `UPSTASH_REDIS_REST_URL` (so an app migrating from Upstash keeps working
    * before its environment is renamed).
    */

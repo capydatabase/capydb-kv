@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-16
+
+### Changed
+
+- **BREAKING: the environment variables are now `CAPYKV_REST_URL` and `CAPYKV_REST_TOKEN`**
+  (were `CAPYDB_KV_REST_URL` / `CAPYDB_KV_REST_TOKEN`). `createKv()` and `resolveKVCredentials()`
+  read the new names and no longer recognise the old ones; the `UPSTASH_REDIS_REST_URL` /
+  `UPSTASH_REDIS_REST_TOKEN` fallback is unchanged. Rename the two variables wherever your app
+  runs and nothing else changes. The README's RESP section now names `CAPYKV_REDIS_URL` and passes
+  `tls: { servername }` to ioredis, which the K/V endpoint requires because it routes by TLS
+  server name.
+
+## [1.0.0] - 2026-09-09
+
 ### Added
 
 - Initial release. `createKv()` builds an `@upstash/redis` client from

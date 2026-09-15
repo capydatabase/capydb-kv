@@ -13,8 +13,8 @@ works with no dependency on us at all:
 import { Redis } from "@upstash/redis"
 
 const redis = new Redis({
-  url: process.env.CAPYDB_KV_REST_URL!,
-  token: process.env.CAPYDB_KV_REST_TOKEN!,
+  url: process.env.CAPYKV_REST_URL!,
+  token: process.env.CAPYKV_REST_TOKEN!,
 })
 ```
 
@@ -23,7 +23,7 @@ package exists for two narrow reasons:
 
 1. **It reads CapyDB's environment variables.** `Redis.fromEnv()` looks for
    `UPSTASH_REDIS_REST_URL` / `_TOKEN`; CapyDB's deployment integrations push
-   `CAPYDB_KV_REST_URL` / `_TOKEN`, so `fromEnv()` finds nothing.
+   `CAPYKV_REST_URL` / `_TOKEN`, so `fromEnv()` finds nothing.
 2. **It fails fast on missing configuration.** `new Redis({})` with an absent
    url or token does not throw — it only logs a warning and then fails later, at
    request time, from wherever the first command happens to run. A deploy
@@ -91,8 +91,8 @@ the endpoint or token is missing or unusable.
 
 | Option | Default | Notes |
 |---|---|---|
-| `url` | `CAPYDB_KV_REST_URL`, then `UPSTASH_REDIS_REST_URL` | The Upstash fallback keeps a migrating app working before its env is renamed |
-| `token` | `CAPYDB_KV_REST_TOKEN`, then `UPSTASH_REDIS_REST_TOKEN` | |
+| `url` | `CAPYKV_REST_URL`, then `UPSTASH_REDIS_REST_URL` | The Upstash fallback keeps a migrating app working before its env is renamed |
+| `token` | `CAPYKV_REST_TOKEN`, then `UPSTASH_REDIS_REST_TOKEN` | |
 | `env` | `process.env` | Pass your own for tests, or for runtimes with no global `process` |
 | `allowInsecureHttp` | `false` | The token is a bearer credential on every request, so plaintext `http://` is refused unless you opt in for a local instance |
 
@@ -111,15 +111,22 @@ Thrown for missing, malformed, or insecure configuration.
 
 The REST endpoint cannot express blocking commands or pub/sub, so job queues
 (BullMQ, Celery, Sidekiq) need the RESP endpoint instead. Any Redis client works, pointed at
-`rediss://default:<token>@<host>:6379`:
-
-```bash
-capydb kv credentials    # prints the host and a password-free rediss:// URL
-```
+`CAPYKV_REDIS_URL` (`rediss://default:<token>@<host>:6379`), which
+`capydb kv create --write-env` writes next to the REST pair:
 
 ```ts
 import Redis from "ioredis"
-const redis = new Redis(`rediss://default:${process.env.CAPYDB_KV_REST_TOKEN}@${host}:6379`)
+const url = process.env.CAPYKV_REDIS_URL!
+const redis = new Redis(url, { tls: { servername: new URL(url).hostname } })
+```
+
+The `servername` is not optional: the endpoint routes by TLS server name, and
+Node's `tls.connect` sends none unless told to, so a bare `new Redis(url)` is
+refused. `redis-cli` needs `--sni <host>` for the same reason; redis-py and
+go-redis send it on their own.
+
+```bash
+capydb kv credentials    # prints the host and a password-free rediss:// URL
 ```
 
 `capydb kv credentials` cannot fill in the password: only the token's hash is
@@ -127,7 +134,7 @@ stored, so it is never returned again after create or rotate. The RESP URL is
 built from the token you saved then.
 
 The deployment integrations (Vercel, Netlify, Cloudflare) push
-`CAPYDB_KV_REST_URL` only, for the same reason — set `CAPYDB_KV_REST_TOKEN`
+`CAPYKV_REST_URL` only, for the same reason — set `CAPYKV_REST_TOKEN`
 yourself wherever your app runs. `capydb env pull` likewise refreshes the URL
 and leaves the token alone.
 

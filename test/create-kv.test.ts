@@ -9,7 +9,7 @@ describe("resolveKVCredentials", () => {
     // The reason the package exists: Redis.fromEnv() looks for UPSTASH_* and
     // CapyDB's integrations push CAPYDB_KV_*, so fromEnv() finds nothing.
     const credentials = resolveKVCredentials({
-      env: { CAPYDB_KV_REST_URL: URL_OK, CAPYDB_KV_REST_TOKEN: TOKEN },
+      env: { CAPYKV_REST_URL: URL_OK, CAPYKV_REST_TOKEN: TOKEN },
     });
     expect(credentials).toEqual({ url: URL_OK, token: TOKEN });
   });
@@ -24,8 +24,8 @@ describe("resolveKVCredentials", () => {
   it("prefers CapyDB's variables when both are present", () => {
     const credentials = resolveKVCredentials({
       env: {
-        CAPYDB_KV_REST_URL: URL_OK,
-        CAPYDB_KV_REST_TOKEN: TOKEN,
+        CAPYKV_REST_URL: URL_OK,
+        CAPYKV_REST_TOKEN: TOKEN,
         UPSTASH_REDIS_REST_URL: "https://other.example",
         UPSTASH_REDIS_REST_TOKEN: "other",
       },
@@ -38,7 +38,7 @@ describe("resolveKVCredentials", () => {
     const credentials = resolveKVCredentials({
       url: "https://explicit.db.capydb.dev",
       token: "capy_kv_explicit",
-      env: { CAPYDB_KV_REST_URL: URL_OK, CAPYDB_KV_REST_TOKEN: TOKEN },
+      env: { CAPYKV_REST_URL: URL_OK, CAPYKV_REST_TOKEN: TOKEN },
     });
     expect(credentials.url).toBe("https://explicit.db.capydb.dev");
     expect(credentials.token).toBe("capy_kv_explicit");
@@ -48,30 +48,30 @@ describe("resolveKVCredentials", () => {
     // @upstash/redis builds request paths by concatenation, so a trailing
     // slash yields a double slash in every request it makes.
     const credentials = resolveKVCredentials({
-      env: { CAPYDB_KV_REST_URL: `${URL_OK}//`, CAPYDB_KV_REST_TOKEN: TOKEN },
+      env: { CAPYKV_REST_URL: `${URL_OK}//`, CAPYKV_REST_TOKEN: TOKEN },
     });
     expect(credentials.url).toBe(URL_OK);
   });
 
   it("ignores blank and whitespace-only values", () => {
     expect(() =>
-      resolveKVCredentials({ env: { CAPYDB_KV_REST_URL: "   ", CAPYDB_KV_REST_TOKEN: TOKEN } }),
+      resolveKVCredentials({ env: { CAPYKV_REST_URL: "   ", CAPYKV_REST_TOKEN: TOKEN } }),
     ).toThrow(CapyKVConfigError);
   });
 
   it("names the missing variable rather than failing later at request time", () => {
     // The behaviour this package adds: new Redis({}) only console.warns, so a
     // deploy with a missing variable fails mid-request instead of at startup.
-    expect(() => resolveKVCredentials({ env: {} })).toThrow(/CAPYDB_KV_REST_URL/);
-    expect(() => resolveKVCredentials({ env: { CAPYDB_KV_REST_URL: URL_OK } })).toThrow(
-      /CAPYDB_KV_REST_TOKEN/,
+    expect(() => resolveKVCredentials({ env: {} })).toThrow(/CAPYKV_REST_URL/);
+    expect(() => resolveKVCredentials({ env: { CAPYKV_REST_URL: URL_OK } })).toThrow(
+      /CAPYKV_REST_TOKEN/,
     );
   });
 
   it("rejects a malformed endpoint", () => {
     expect(() =>
       resolveKVCredentials({
-        env: { CAPYDB_KV_REST_URL: "not a url", CAPYDB_KV_REST_TOKEN: TOKEN },
+        env: { CAPYKV_REST_URL: "not a url", CAPYKV_REST_TOKEN: TOKEN },
       }),
     ).toThrow(CapyKVConfigError);
   });
@@ -80,14 +80,14 @@ describe("resolveKVCredentials", () => {
     // The token is a bearer credential on every request.
     expect(() =>
       resolveKVCredentials({
-        env: { CAPYDB_KV_REST_URL: "http://localhost:8080", CAPYDB_KV_REST_TOKEN: TOKEN },
+        env: { CAPYKV_REST_URL: "http://localhost:8080", CAPYKV_REST_TOKEN: TOKEN },
       }),
     ).toThrow(/Refusing to send the K\/V token/);
   });
 
   it("allows plaintext http when explicitly opted in", () => {
     const credentials = resolveKVCredentials({
-      env: { CAPYDB_KV_REST_URL: "http://localhost:8080", CAPYDB_KV_REST_TOKEN: TOKEN },
+      env: { CAPYKV_REST_URL: "http://localhost:8080", CAPYKV_REST_TOKEN: TOKEN },
       allowInsecureHttp: true,
     });
     expect(credentials.url).toBe("http://localhost:8080");
@@ -106,7 +106,7 @@ describe("resolveKVCredentials", () => {
 
 describe("createKv", () => {
   it("returns a usable @upstash/redis client", () => {
-    const redis = createKv({ env: { CAPYDB_KV_REST_URL: URL_OK, CAPYDB_KV_REST_TOKEN: TOKEN } });
+    const redis = createKv({ env: { CAPYKV_REST_URL: URL_OK, CAPYKV_REST_TOKEN: TOKEN } });
     // A plain Redis instance: everything that accepts one - notably
     // @upstash/ratelimit - works unchanged.
     expect(typeof redis.get).toBe("function");
@@ -118,7 +118,7 @@ describe("createKv", () => {
 
   it("forwards client options without letting them override credentials", () => {
     const redis = createKv({
-      env: { CAPYDB_KV_REST_URL: URL_OK, CAPYDB_KV_REST_TOKEN: TOKEN },
+      env: { CAPYKV_REST_URL: URL_OK, CAPYKV_REST_TOKEN: TOKEN },
       enableAutoPipelining: false,
       retry: false,
     });
