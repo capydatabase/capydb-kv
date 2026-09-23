@@ -22,8 +22,9 @@ That is genuinely all it takes, and it is the recommended starting point. This
 package exists for two narrow reasons:
 
 1. **It reads CapyDB's environment variables.** `Redis.fromEnv()` looks for
-   `UPSTASH_REDIS_REST_URL` / `_TOKEN`; CapyDB's deployment integrations push
-   `CAPYKV_REST_URL` / `_TOKEN`, so `fromEnv()` finds nothing.
+   `UPSTASH_REDIS_REST_URL` / `_TOKEN`; CapyDB uses `CAPYKV_REST_URL` /
+   `CAPYKV_REST_TOKEN` (the deployment integrations push the URL, and you set
+   the token), so `fromEnv()` finds nothing.
 2. **It fails fast on missing configuration.** `new Redis({})` with an absent
    url or token does not throw — it only logs a warning and then fails later, at
    request time, from wherever the first command happens to run. A deploy

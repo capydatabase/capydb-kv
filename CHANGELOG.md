@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- README and the module doc comment said the deployment integrations push both `CAPYKV_REST_URL`
+  and `CAPYKV_REST_TOKEN`. They push the URL only - the control plane stores just the token's
+  hash - so the token is yours to set, as the README's own env section already said. A test
+  comment still named the retired `CAPYDB_KV_*` variables; it now says `CAPYKV_*`.
+
 ## [2.0.0] - 2026-09-16
 
 ### Changed

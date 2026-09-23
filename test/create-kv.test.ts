@@ -7,7 +7,7 @@ const TOKEN = "capy_kv_0123456789abcdef";
 describe("resolveKVCredentials", () => {
   it("reads CapyDB's own environment variables", () => {
     // The reason the package exists: Redis.fromEnv() looks for UPSTASH_* and
-    // CapyDB's integrations push CAPYDB_KV_*, so fromEnv() finds nothing.
+    // CapyDB uses CAPYKV_*, so fromEnv() finds nothing.
     const credentials = resolveKVCredentials({
       env: { CAPYKV_REST_URL: URL_OK, CAPYKV_REST_TOKEN: TOKEN },
     });

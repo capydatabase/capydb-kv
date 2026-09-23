@@ -4,10 +4,11 @@
  * A thin, typed convenience layer over `@upstash/redis` (a peer dependency)
  * that does two things and nothing else:
  *
- * 1. Reads CapyDB's own environment variables. CapyDB's deployment
- *    integrations push `CAPYKV_REST_URL` and `CAPYKV_REST_TOKEN`, not
- *    the `UPSTASH_*` names that `Redis.fromEnv()` looks for, so
- *    `fromEnv()` cannot find them. This package is the equivalent.
+ * 1. Reads CapyDB's own environment variables. CapyDB uses `CAPYKV_REST_URL`
+ *    (pushed by the deployment integrations) and `CAPYKV_REST_TOKEN` (set by
+ *    you - only its hash is stored, so no integration can push it), not the
+ *    `UPSTASH_*` names that `Redis.fromEnv()` looks for, so `fromEnv()`
+ *    cannot find them. This package is the equivalent.
  * 2. Fails fast when configuration is missing. Constructing `new Redis({})`
  *    with an absent url or token does NOT throw - the client only
  *    `console.warn`s and then fails later, at request time, from wherever the
