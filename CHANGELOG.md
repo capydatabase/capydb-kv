@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-09-26
+
+### Fixed
+
+- The README and the module documentation said CapyDB's deployment integrations set both `CAPYKV_REST_URL` and `CAPYKV_REST_TOKEN`. The integrations set only `CAPYKV_REST_URL`. You must set `CAPYKV_REST_TOKEN` yourself because CapyDB stores only a hash of the token and cannot supply it. ([c912f64](https://github.com/capydatabase/capydb-kv/commit/c912f64))
+
 ## [2.0.1] - 2026-09-26
 
 ### Changed
@@ -51,3 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   startup one.
 - Plaintext `http://` endpoints are refused unless `allowInsecureHttp` is set —
   the token is a bearer credential sent on every request.
+
+[Unreleased]: https://github.com/capydatabase/capydb-kv/compare/v2.0.2...HEAD
+[2.0.2]: https://github.com/capydatabase/capydb-kv/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/capydatabase/capydb-kv/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/capydatabase/capydb-kv/compare/v1.0.0...v2.0.0
+[1.0.0]: https://github.com/capydatabase/capydb-kv/releases/tag/v1.0.0
