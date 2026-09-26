@@ -1,6 +1,6 @@
 {
   "name": "@capydb/kv",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Official CapyDB K/V helper - builds an @upstash/redis client from CapyDB environment variables, and fails fast when they are missing.",
   "keywords": [
     "capydb",
