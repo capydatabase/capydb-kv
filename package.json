@@ -56,13 +56,13 @@
     "@types/node": "^26.6.3",
     "@upstash/redis": "^1.39.0",
     "lefthook": "^2.1.14",
-    "oxfmt": "^0.70.0",
-    "oxlint": "^1.85.0",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
     "tsdown": "0.23.0",
     "typescript": "next",
     "vitest": "^5.0.2"
   },
-  "packageManager": "pnpm@11.28.0",
+  "packageManager": "pnpm@11.28.2",
   "engines": {
     "node": ">=24.21.0"
   },

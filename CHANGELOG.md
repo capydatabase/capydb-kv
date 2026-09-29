@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Dev tooling: oxlint 1.86.0 (was 1.85.0) and oxfmt 0.71.0 (was 0.70.0); `packageManager` is
+  `pnpm@11.28.2` (was `pnpm@11.28.0`). No runtime change.
+
 ## [2.0.2] - 2026-09-26
 
 ### Fixed
