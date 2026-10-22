@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `pnpm@11.28.2` (was `pnpm@11.28.0`). No runtime change.
 - Dev tooling: vitest 5.0.3 (was 5.0.2), lefthook 2.1.15 (was 2.1.14) and `typescript@next`
   7.1.0-dev.20260930.4 (was 7.1.0-dev.20260929.1). No runtime change.
+- Dev tooling: oxlint 1.89.0, oxfmt 0.74.0, tsdown 0.23.1, vitest 5.0.5, lefthook 2.2.2,
+  commitlint 21.2.4, `@types/node` 26.6.5 and `typescript@next` 7.1.0-dev.20261022.1;
+  `packageManager` is `pnpm@11.28.7` and `engines.node` is `>=24.22.1`. No runtime change.
 
 ## [2.0.2] - 2026-09-26
 
