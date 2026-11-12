@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Dev tooling: oxlint 1.93, oxfmt 0.78, pnpm 12.20.0. No runtime change.
+
 ### Added
 
 - `LICENSE` with the MIT license text (the package was already declared MIT); it now ships in the
